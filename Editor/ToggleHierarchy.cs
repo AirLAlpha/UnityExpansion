@@ -7,32 +7,36 @@ using UnityEditor.SceneManagement;
 [InitializeOnLoad]
 public static class ToggleHierarchy
 {
+    //  Toggleの横幅
     private const int WIDTH = 16;
 
     static ToggleHierarchy()
     {
-        EditorApplication.hierarchyWindowItemOnGUI += Toggle;
+        //  ヒエラルキーの各アイテムのデリゲートに関数を登録
+        EditorApplication.hierarchyWindowItemOnGUI += ToggleObject;
     }
 
-    private static void Toggle(int instanceID, Rect selectionRect)
+    private static void ToggleObject(int instanceID, Rect objRect)
     {
         //  instanceID のオブジェクトを取得してきて、GameObject型にキャスト
-        GameObject gameObject = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
-        if (gameObject == null) return;
+        GameObject obj = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
+        if (obj == null) return;
 
         //  座標の取得
-        Rect position = selectionRect;
+        Rect rectPos = objRect;
 
-        //  
-        position.x = position.xMax;
-        position.width = WIDTH;
+        //  Toggleを表示する位置を指定
+        rectPos.x = rectPos.xMax;
+        rectPos.width = WIDTH;
 
-        //  
-        var newActive = GUI.Toggle(position, gameObject.activeSelf, string.Empty);
+        //  Toggleを表示して、状態を取得
+        var newActive = GUI.Toggle(rectPos, obj.activeSelf, string.Empty);
 
-        if (newActive == gameObject.activeSelf) return;
+        //  Toggleがオブジェクトのアクティブと同じなら処理をやめる
+        if (newActive == obj.activeSelf) return;
 
-        gameObject.SetActive(newActive);
+        //  オブジェクトのアクティブにToggleを適応
+        obj.SetActive(newActive);
 
         //  シーンの保存フラグを立てる
         EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
