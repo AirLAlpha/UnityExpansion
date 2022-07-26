@@ -7,38 +7,38 @@ using UnityEditor.SceneManagement;
 [InitializeOnLoad]
 public static class ToggleHierarchy
 {
-    //  Toggle‚Ì‰¡•
+    //  Toggleã®æ¨ªå¹…
     private const int WIDTH = 16;
 
     static ToggleHierarchy()
     {
-        //  ƒqƒGƒ‰ƒ‹ƒL[‚ÌŠeƒAƒCƒeƒ€‚ÌƒfƒŠƒQ[ƒg‚ÉŠÖ”‚ğ“o˜^
+        //  ãƒ’ã‚¨ãƒ©ãƒ«ã‚­ãƒ¼ã®å„ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒ‡ãƒªã‚²ãƒ¼ãƒˆã«é–¢æ•°ã‚’ç™»éŒ²
         EditorApplication.hierarchyWindowItemOnGUI += ToggleObject;
     }
 
     private static void ToggleObject(int instanceID, Rect objRect)
     {
-        //  instanceID ‚ÌƒIƒuƒWƒFƒNƒg‚ğæ“¾‚µ‚Ä‚«‚ÄAGameObjectŒ^‚ÉƒLƒƒƒXƒg
+        //  instanceID ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—ã—ã¦ãã¦ã€GameObjectå‹ã«ã‚­ãƒ£ã‚¹ãƒˆ
         GameObject obj = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
         if (obj == null) return;
 
-        //  À•W‚Ìæ“¾
+        //  åº§æ¨™ã®å–å¾—
         Rect rectPos = objRect;
 
-        //  Toggle‚ğ•\¦‚·‚éˆÊ’u‚ğw’è
-        rectPos.x = rectPos.xMax;
+        //  Toggleã‚’è¡¨ç¤ºã™ã‚‹ä½ç½®ã‚’æŒ‡å®š
+        rectPos.x = rectPos.xMax - WIDTH;
         rectPos.width = WIDTH;
 
-        //  Toggle‚ğ•\¦‚µ‚ÄAó‘Ô‚ğæ“¾
+        //  Toggleã‚’è¡¨ç¤ºã—ã¦ã€çŠ¶æ…‹ã‚’å–å¾—
         var newActive = GUI.Toggle(rectPos, obj.activeSelf, string.Empty);
 
-        //  Toggle‚ªƒIƒuƒWƒFƒNƒg‚ÌƒAƒNƒeƒBƒu‚Æ“¯‚¶‚È‚çˆ—‚ğ‚â‚ß‚é
+        //  ToggleãŒã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã¨åŒã˜ãªã‚‰å‡¦ç†ã‚’ã‚„ã‚ã‚‹
         if (newActive == obj.activeSelf) return;
 
-        //  ƒIƒuƒWƒFƒNƒg‚ÌƒAƒNƒeƒBƒu‚ÉToggle‚ğ“K‰
+        //  ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«Toggleã‚’é©å¿œ
         obj.SetActive(newActive);
 
-        //  ƒV[ƒ“‚Ì•Û‘¶ƒtƒ‰ƒO‚ğ—§‚Ä‚é
+        //  ã‚·ãƒ¼ãƒ³ã®ä¿å­˜ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
         EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
     }
 }
